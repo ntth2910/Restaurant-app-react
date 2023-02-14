@@ -12,6 +12,7 @@ import RestaurantMenuIcon from '@material-ui/icons/RestaurantMenu'
 import ReorderIcon from '@material-ui/icons/Reorder'
 import { Button, Select, Input } from '../../controls/index'
 import useForm from '../../hooks/useForm'
+import { createdAPIEndpoint, ENDPOINTS } from '../../api/index'
 
 const pMethods = [
   { id: 'none', title: 'Select' },
@@ -43,6 +44,25 @@ const useStyle = makeStyles((theme) => ({
 const OrderForm = (props) => {
   const { values, errors, handleInputChange } = props
   const classes = useStyle()
+
+  const [customerList, setCustomerList] = useState([])
+
+  useEffect(() => {
+    createdAPIEndpoint(ENDPOINTS.CUSTOMER)
+      .fetchAll()
+      .then((res) => {
+        console.log('hihi')
+        let customerList = res.data.map((item) => ({
+          id: item.customerId,
+          title: item.customerName,
+        }))
+        customerList = [{ id: 0, title: 'Select' }].concat(customerList)
+        setCustomerList(customerList)
+        console.log(customerList)
+      })
+      .catch((err) => console.log(err))
+  }, [])
+
   return (
     <Form>
       <Grid container>
@@ -68,24 +88,25 @@ const OrderForm = (props) => {
             label="Customer"
             name="customerId"
             onChange={handleInputChange}
-            options={[
-              {
-                id: 0,
-                title: 'Select',
-              },
-              {
-                id: 1,
-                title: 'customer 1',
-              },
-              {
-                id: 2,
-                title: 'customer 2',
-              },
-              {
-                id: 3,
-                title: 'customer 3',
-              },
-            ]}
+            // options={[
+            //   {
+            //     id: 0,
+            //     title: 'Select',
+            //   },
+            //   {
+            //     id: 1,
+            //     title: 'customer 1',
+            //   },
+            //   {
+            //     id: 2,
+            //     title: 'customer 2',
+            //   },
+            //   {
+            //     id: 3,
+            //     title: 'customer 3',
+            //   },
+            // ]}
+            options={customerList}
           />
         </Grid>
         <Grid item xs={6}>
