@@ -1,6 +1,10 @@
 import React from 'react'
 import OrderForm from './OrderForm'
 import useForm from '../../hooks/useForm'
+import { Grid } from '@material-ui/core'
+import { Search } from '@material-ui/icons'
+import SearchFoodItem from './SearchFoodItem'
+import OrderedFoodItems from './OrderedFoodItems'
 
 const generateOrderNumber = () => {
   Math.floor(100000 + Math.random() * 900000).toString()
@@ -25,7 +29,35 @@ const Order = () => {
     handleInputChange,
     resetFormControls,
   } = useForm(getFreshModelObject)
-  return <OrderForm {...{ values, errors, handleInputChange }} />
+
+  const addFoodItem = (foodItem) => {
+    let x = {
+      orderMasterId: values.orderMasterId,
+      orderDetailId: 0,
+      foodItemId: foodItem.foodItemId,
+      quantity: 1,
+      foodItemPrice: foodItem.foodItemPrice,
+      foodItemName: foodItem.foodItemName,
+    }
+    setValues({
+      ...values,
+      orderDetails: [...values.orderDetails, x],
+    })
+  }
+
+  return (
+    <Grid container>
+      <Grid item xs={12}>
+        <OrderForm {...{ values, errors, handleInputChange }} />
+      </Grid>
+      <Grid item xs={6}>
+        <SearchFoodItem {...{ addFoodItem }} />
+      </Grid>
+      <Grid item xs={6}>
+        <OrderedFoodItems {...{ orderedFoodItems: values.orderDetails }} />
+      </Grid>
+    </Grid>
+  )
 }
 
 export default Order

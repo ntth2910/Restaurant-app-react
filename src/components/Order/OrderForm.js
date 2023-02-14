@@ -58,7 +58,7 @@ const OrderForm = (props) => {
         }))
         customerList = [{ id: 0, title: 'Select' }].concat(customerList)
         setCustomerList(customerList)
-        console.log(customerList)
+        console.log('customerList', customerList)
       })
       .catch((err) => console.log(err))
   }, [])
