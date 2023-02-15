@@ -59,7 +59,9 @@ const Order = () => {
         <OrderForm {...{ values, errors, handleInputChange }} />
       </Grid>
       <Grid item xs={6}>
-        <SearchFoodItem {...{ addFoodItem }} />
+        <SearchFoodItem
+          {...{ addFoodItem, orderedFoodItems: values.orderDetails }}
+        />
       </Grid>
       <Grid item xs={6}>
         <OrderedFoodItems

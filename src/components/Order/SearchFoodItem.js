@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const SearchFoodItem = (props) => {
-  const { addFoodItem } = props
+  const { addFoodItem, orderedFoodItems } = props
   const [foodItems, setFoodItems] = useState([])
 
   //state for foodItems after search
@@ -74,12 +74,13 @@ const SearchFoodItem = (props) => {
   useEffect(() => {
     let x = [...foodItems]
     x = x.filter((y) => {
-      return y.foodItemName
-        .toLowerCase()
-        .includes(searchKey.toLocaleLowerCase())
+      return (
+        y.foodItemName.toLowerCase().includes(searchKey.toLocaleLowerCase()) &&
+        orderedFoodItems.every((item) => item.foodItemId !== y.foodItemId)
+      )
     })
     setSearchList(x)
-  }, [searchKey])
+  }, [searchKey, orderedFoodItems])
 
   return (
     <>
