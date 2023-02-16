@@ -30,41 +30,16 @@ const Order = () => {
     resetFormControls,
   } = useForm(getFreshModelObject)
 
-  //add food to order
-  const addFoodItem = (foodItem) => {
-    let x = {
-      orderMasterId: values.orderMasterId,
-      orderDetailId: 0,
-      foodItemId: foodItem.foodItemId,
-      quantity: 1,
-      foodItemPrice: foodItem.foodItemPrice,
-      foodItemName: foodItem.foodItemName,
-    }
-    setValues({
-      ...values,
-      orderDetails: [...values.orderDetails, x],
-    })
-  }
-
-  //remove foodItem in order list
-  const removeFoodItem = (index, id) => {
-    let x = { ...values }
-    x.orderDetails = x.orderDetails.filter((item, i) => i !== index)
-    setValues({ ...x })
-  }
-
   return (
     <Grid container>
       <Grid item xs={12}>
         <OrderForm {...{ values, errors, handleInputChange }} />
       </Grid>
       <Grid item xs={6}>
-        <SearchFoodItem
-          {...{ addFoodItem, orderedFoodItems: values.orderDetails }}
-        />
+        <SearchFoodItem {...{ values, setValues }} />
       </Grid>
       <Grid item xs={6}>
-        <OrderedFoodItems {...{ removeFoodItem, values, setValues }} />
+        <OrderedFoodItems {...{ values, setValues }} />
       </Grid>
     </Grid>
   )

@@ -48,7 +48,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const SearchFoodItem = (props) => {
-  const { addFoodItem, orderedFoodItems } = props
+  const { values, setValues } = props
+
+  let orderedFoodItems = values.orderDetails
+
   const [foodItems, setFoodItems] = useState([])
 
   //state for foodItems after search
@@ -82,6 +85,22 @@ const SearchFoodItem = (props) => {
     setSearchList(x)
   }, [searchKey, orderedFoodItems])
 
+  //add food to order
+  const addFoodItem = (foodItem) => {
+    let x = {
+      orderMasterId: values.orderMasterId,
+      orderDetailId: 0,
+      foodItemId: foodItem.foodItemId,
+      quantity: 1,
+      foodItemPrice: foodItem.price,
+      foodItemName: foodItem.foodItemName,
+    }
+    setValues({
+      ...values,
+      orderDetails: [...values.orderDetails, x],
+    })
+  }
+
   return (
     <>
       <Paper className={classes.searchPaper}>
@@ -97,7 +116,7 @@ const SearchFoodItem = (props) => {
       </Paper>
       <List className={classes.listRoot}>
         {searchList.map((item, index) => (
-          <ListItem key={index}>
+          <ListItem key={index} onClick={(e) => addFoodItem(item)}>
             <ListItemText
               primary={item.foodItemName}
               secondary={'$' + item.price}
