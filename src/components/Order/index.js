@@ -64,9 +64,7 @@ const Order = () => {
         />
       </Grid>
       <Grid item xs={6}>
-        <OrderedFoodItems
-          {...{ orderedFoodItems: values.orderDetails, removeFoodItem }}
-        />
+        <OrderedFoodItems {...{ removeFoodItem, values, setValues }} />
       </Grid>
     </Grid>
   )
