@@ -13,6 +13,7 @@ import ReorderIcon from '@material-ui/icons/Reorder'
 import { Button, Select, Input } from '../../controls/index'
 import useForm from '../../hooks/useForm'
 import { createdAPIEndpoint, ENDPOINTS } from '../../api/index'
+import { roundTo2DecimalPoint } from '../../utils/index'
 
 const pMethods = [
   { id: 'none', title: 'Select' },
@@ -42,7 +43,7 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 const OrderForm = (props) => {
-  const { values, errors, handleInputChange } = props
+  const { values, setValues, errors, handleInputChange } = props
   const classes = useStyle()
 
   const [customerList, setCustomerList] = useState([])
@@ -62,6 +63,16 @@ const OrderForm = (props) => {
       })
       .catch((err) => console.log(err))
   }, [])
+
+  useEffect(() => {
+    let gTotal = values.orderDetails.reduce((tempTotal, item) => {
+      return tempTotal + item.quantity * item.foodItemPrice
+    }, 0)
+    setValues({
+      ...values,
+      gTotal: roundTo2DecimalPoint(gTotal),
+    })
+  }, [JSON.stringify(values.orderDetails)])
 
   return (
     <Form>
