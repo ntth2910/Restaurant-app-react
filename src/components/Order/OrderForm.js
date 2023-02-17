@@ -43,7 +43,7 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 const OrderForm = (props) => {
-  const { values, setValues, errors, handleInputChange } = props
+  const { values, setValues, errors, setErrors, handleInputChange } = props
   const classes = useStyle()
 
   const [customerList, setCustomerList] = useState([])
@@ -74,8 +74,26 @@ const OrderForm = (props) => {
     })
   }, [JSON.stringify(values.orderDetails)])
 
+  //validate Form
+  const validateForm = () => {
+    let temp = {}
+    temp.customerId = values.customerId !== 0 ? '' : 'This field is required.'
+    temp.pMethod = values.pMethod !== 0 ? 'none' : 'This field is required.'
+    temp.orderDetails =
+      values.orderDetails.length !== 0 ? '' : 'This field is required.'
+    setErrors({ ...temp })
+    return Object.values(temp).every((x) => x === '')
+  }
+
+  //submit order function
+  const submitOrder = (e) => {
+    e.preventDefault()
+    if (validateForm()) {
+    }
+  }
+
   return (
-    <Form>
+    <Form onSubmit={submitOrder}>
       <Grid container>
         <Grid item xs={6}>
           <Input
@@ -118,6 +136,7 @@ const OrderForm = (props) => {
             //   },
             // ]}
             options={customerList}
+            error={errors.customerId}
           />
         </Grid>
         <Grid item xs={6}>
@@ -127,6 +146,7 @@ const OrderForm = (props) => {
             name="pMethod"
             options={pMethods}
             onChange={handleInputChange}
+            error={errors.pMethod}
           />
           <Input
             label="Grand Total"

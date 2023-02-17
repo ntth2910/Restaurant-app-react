@@ -33,7 +33,7 @@ const Order = () => {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <OrderForm {...{ values, setValues, errors, handleInputChange }} />
+        <OrderForm {...{ values, setValues, errors, setErrors, handleInputChange }} />
       </Grid>
       <Grid item xs={6}>
         <SearchFoodItem {...{ values, setValues }} />
